@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Search Engine</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #search-results { margin-top: 20px; }
+        #new-site-form { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Simple Web Search Engine</h1>
+
+    <input type="text" id="search-input" placeholder="Search for websites..." />
+    <button id="search-button">Search</button>
+
+    <div id="search-results"></div>
+
+    <h2>Add New Site</h2>
+    <div id="new-site-form">
+        <input type="text" id="site-name" placeholder="Site Name" />
+        <input type="text" id="site-url" placeholder="Site URL" />
+        <button id="add-site-button">Add Site</button>
+    </div>
+
+    <script>
+        const initialSites = [
+            { name: 'Example', url: 'https://www.example.com' },
+            { name: 'OpenAI', url: 'https://openai.com' },
+            { name: 'GitHub', url: 'https://github.com' }
+        ];
+
+        let sites = [...initialSites];
+
+        function displayResults(results) {
+            const resultsDiv = document.getElementById('search-results');
+            resultsDiv.innerHTML = '';
+            if (results.length === 0) {
+                resultsDiv.innerHTML = '<p>No results found.</p>';  
+            } else {
+                results.forEach(site => {
+                    const link = document.createElement('a');
+                    link.href = site.url;
+                    link.target = '_blank';
+                    link.innerText = site.name;
+                    resultsDiv.appendChild(link);
+                    resultsDiv.appendChild(document.createElement('br'));
+                });
+            }
+        }
+
+        document.getElementById('search-button').addEventListener('click', () => {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const results = sites.filter(site => site.name.toLowerCase().includes(query));
+            displayResults(results);
+        });
+
+        document.getElementById('add-site-button').addEventListener('click', () => {
+            const name = document.getElementById('site-name').value;
+            const url = document.getElementById('site-url').value;
+            if (name && url) {
+                sites.push({ name, url });
+                alert('Site added!');
+                document.getElementById('site-name').value = '';
+                document.getElementById('site-url').value = '';
+            } else {
+                alert('Please enter both name and URL.');
+            }
+        });
+    </script>
+</body>
+</html>
